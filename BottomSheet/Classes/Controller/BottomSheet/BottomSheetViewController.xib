@@ -14,6 +14,7 @@
                 <outlet property="containerBottomConstraint" destination="vbk-5x-nWk" id="ZLg-zG-VFk"/>
                 <outlet property="containerHeightConstraint" destination="r8b-wy-XAf" id="PoB-Pv-7kC"/>
                 <outlet property="containerView" destination="6mp-l6-r2c" id="Oq0-44-1Yg"/>
+                <outlet property="dismissAreaView" destination="ko6-cm-j90" id="x9D-1e-IuE"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -22,6 +23,10 @@
             <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ko6-cm-j90">
+                    <rect key="frame" x="0.0" y="0.0" width="414" height="596"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6mp-l6-r2c">
                     <rect key="frame" x="0.0" y="596" width="414" height="300"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -34,6 +39,10 @@
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="6mp-l6-r2c" secondAttribute="trailing" id="J0Y-Hm-dyH"/>
                 <constraint firstItem="6mp-l6-r2c" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="RDD-7K-UK7"/>
+                <constraint firstItem="6mp-l6-r2c" firstAttribute="top" secondItem="ko6-cm-j90" secondAttribute="bottom" id="YED-qR-3t7"/>
+                <constraint firstItem="ko6-cm-j90" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="sdT-rb-BnQ"/>
+                <constraint firstAttribute="trailing" secondItem="ko6-cm-j90" secondAttribute="trailing" id="uXU-My-6n2"/>
+                <constraint firstItem="ko6-cm-j90" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="v3U-BG-PnX"/>
                 <constraint firstAttribute="bottom" secondItem="6mp-l6-r2c" secondAttribute="bottom" id="vbk-5x-nWk"/>
             </constraints>
             <point key="canvasLocation" x="47.826086956521742" y="57.589285714285708"/>

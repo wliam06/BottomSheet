@@ -16,7 +16,8 @@ enum SheetSize {
 class BottomSheetViewController: UIViewController {
   public private(set) var childViewController: UIViewController!
   @IBOutlet weak var containerView: UIView!
-  
+
+  @IBOutlet weak var dismissAreaView: UIView!
   @IBOutlet weak var containerHeightConstraint: NSLayoutConstraint!
   @IBOutlet weak var containerBottomConstraint: NSLayoutConstraint!
 
@@ -25,7 +26,9 @@ class BottomSheetViewController: UIViewController {
 
   /// If true, sheet may be dismissed by panning down
   public var dismissOnPan: Bool = true
-  
+
+  public var willDismiss: ((BottomSheetViewController) -> Void)?
+  public var didDismiss: ((BottomSheetViewController) -> Void)?
   /// If true, sheet's dismiss view will be generated, otherwise sheet remains fixed and will need to be dismissed programatically
   public var dismissable: Bool = true {
     didSet {
@@ -92,12 +95,14 @@ class BottomSheetViewController: UIViewController {
     configureContainerView()
 
     configureChildViewController()
+
+    // Setup dismiss view when tapped
+    handleDismissView()
   }
 
   private func configureContainerView() {
     self.view.addSubview(self.containerView)
     self.containerHeightConstraint.constant = viewHeight(forSize: self.sheetSize)
-    debugPrint("HEIGHT:", self.containerHeightConstraint.constant)
 
     self.containerView.layer.masksToBounds = true
     self.containerView.backgroundColor = .clear
@@ -126,5 +131,26 @@ class BottomSheetViewController: UIViewController {
     case .halfScreen:
       return (UIScreen.main.bounds.height) / 2 + 24
     }
+  }
+
+  private func handleDismissView() {
+    self.view.addSubview(firstView: dismissAreaView, secondView: containerView)
+    dismissAreaView.backgroundColor = .clear
+    dismissAreaView.isUserInteractionEnabled = true
+    
+    let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissViewTapped(completion:)))
+    dismissAreaView.addGestureRecognizer(tapGesture)
+  }
+
+  @objc private func dismissViewTapped(completion: (() -> Void)? = nil) {
+    guard dismissOnBackgroundTap else { return }
+
+    // Close bottom sheet
+    UIView.animate(withDuration: 0.3, delay: 0, options: [.curveEaseIn], animations: { [weak self] in
+      self?.containerView.transform = CGAffineTransform(translationX: 0, y: self?.containerView.frame.height ?? 0)
+      self?.view.backgroundColor = .clear
+      }, completion: { [weak self] complete in
+        self?.dismiss(animated: true, completion: nil)
+    })
   }
 }
