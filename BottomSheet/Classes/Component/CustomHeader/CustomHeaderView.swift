@@ -1,5 +1,5 @@
 //
-//  TableView.swift
+//  CustomHeaderView.swift
 //  BottomSheet
 //
 //  Created by William_itmi on 04/09/19.
@@ -8,12 +8,10 @@
 
 import UIKit
 
-class CustomTableView: UIView {
+class CustomHeaderView: UIView {
   @IBOutlet var contentView: UIView!
-  @IBOutlet weak var handlerView: UIView!
-  @IBOutlet weak var vStackView: UIStackView!
-  @IBOutlet weak var headerContainerView: UIView!
-  @IBOutlet weak var tableView: UITableView!
+  @IBOutlet weak var headerLabel: UILabel!
+  @IBOutlet weak var searchBar: CustomSearchBar!
 
   override init(frame: CGRect) {
     super.init(frame: frame)
@@ -28,18 +26,12 @@ class CustomTableView: UIView {
   }
 
   private func loadNib() {
-    Bundle.main.loadNibNamed(String(describing: CustomTableView.self), owner: self, options: nil)
+    Bundle.main.loadNibNamed(String(describing: CustomHeaderView.self), owner: self, options: nil)
 
     guard let content = contentView else { return }
     content.frame = self.bounds
     content.autoresizingMask = [.flexibleWidth, .flexibleHeight]
 
     addSubview(content)
-
-    configureLayout()
-  }
-
-  private func configureLayout() {
-    
   }
 }

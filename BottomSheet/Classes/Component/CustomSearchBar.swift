@@ -77,3 +77,4 @@ class CustomSearchBar: UISearchBar {
     self.layoutSubviews()
   }
 }
+
