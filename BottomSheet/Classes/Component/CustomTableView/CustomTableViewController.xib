@@ -27,15 +27,39 @@
                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="lmJ-8o-PZR">
                     <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                     <subviews>
-                        <view contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9U1-kR-naD" customClass="CustomHeaderView" customModule="BottomSheet" customModuleProvider="target">
-                            <rect key="frame" x="0.0" y="0.0" width="414" height="130"/>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1dq-jf-zLr">
+                            <rect key="frame" x="0.0" y="0.0" width="414" height="24"/>
+                            <subviews>
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1yy-42-fBD">
+                                    <rect key="frame" x="187" y="9" width="40" height="6"/>
+                                    <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="6" id="fVH-es-MyV"/>
+                                        <constraint firstAttribute="width" constant="40" id="vaC-E4-XPx"/>
+                                    </constraints>
+                                    <userDefinedRuntimeAttributes>
+                                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                            <integer key="value" value="4"/>
+                                        </userDefinedRuntimeAttribute>
+                                    </userDefinedRuntimeAttributes>
+                                </view>
+                            </subviews>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
-                                <constraint firstAttribute="height" constant="130" id="b68-AO-RZR"/>
+                                <constraint firstItem="1yy-42-fBD" firstAttribute="centerX" secondItem="1dq-jf-zLr" secondAttribute="centerX" id="Y2Z-Fc-fo7"/>
+                                <constraint firstAttribute="height" constant="24" id="kUH-f4-Zxl"/>
+                                <constraint firstItem="1yy-42-fBD" firstAttribute="centerY" secondItem="1dq-jf-zLr" secondAttribute="centerY" id="ppC-8o-GZ7"/>
+                            </constraints>
+                        </view>
+                        <view contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9U1-kR-naD" customClass="CustomHeaderView" customModule="BottomSheet" customModuleProvider="target">
+                            <rect key="frame" x="0.0" y="24" width="414" height="110"/>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="110" id="b68-AO-RZR"/>
                             </constraints>
                         </view>
                         <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="H4l-MX-b56">
-                            <rect key="frame" x="0.0" y="130" width="414" height="766"/>
+                            <rect key="frame" x="0.0" y="134" width="414" height="762"/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <connections>
                                 <outlet property="dataSource" destination="-1" id="vWK-0F-FWC"/>
@@ -44,28 +68,13 @@
                         </tableView>
                     </subviews>
                 </stackView>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1yy-42-fBD">
-                    <rect key="frame" x="192" y="54" width="30" height="4"/>
-                    <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="4" id="fVH-es-MyV"/>
-                        <constraint firstAttribute="width" constant="30" id="vaC-E4-XPx"/>
-                    </constraints>
-                    <userDefinedRuntimeAttributes>
-                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                            <integer key="value" value="3"/>
-                        </userDefinedRuntimeAttribute>
-                    </userDefinedRuntimeAttributes>
-                </view>
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
                 <constraint firstAttribute="bottom" secondItem="lmJ-8o-PZR" secondAttribute="bottom" id="8h6-ek-3n5"/>
                 <constraint firstItem="lmJ-8o-PZR" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="DgH-Qa-s4G"/>
                 <constraint firstItem="lmJ-8o-PZR" firstAttribute="trailing" secondItem="vUN-kp-3ea" secondAttribute="trailing" id="RWi-fu-iGs"/>
-                <constraint firstItem="1yy-42-fBD" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="10" id="V59-5w-ENv"/>
                 <constraint firstItem="lmJ-8o-PZR" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="iYM-N3-HVO"/>
-                <constraint firstItem="1yy-42-fBD" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="ndO-Nf-FaI"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <point key="canvasLocation" x="47.826086956521742" y="35.491071428571423"/>

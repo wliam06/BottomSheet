@@ -24,14 +24,14 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ko6-cm-j90">
-                    <rect key="frame" x="0.0" y="0.0" width="414" height="596"/>
+                    <rect key="frame" x="0.0" y="0.0" width="414" height="791"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6mp-l6-r2c">
-                    <rect key="frame" x="0.0" y="596" width="414" height="300"/>
+                    <rect key="frame" x="0.0" y="791" width="414" height="105"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="300" id="r8b-wy-XAf"/>
+                        <constraint firstAttribute="height" constant="105" id="r8b-wy-XAf"/>
                     </constraints>
                 </view>
             </subviews>

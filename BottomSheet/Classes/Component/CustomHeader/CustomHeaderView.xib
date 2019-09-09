@@ -18,20 +18,23 @@
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="i5M-Pr-FkT">
-            <rect key="frame" x="0.0" y="0.0" width="414" height="130"/>
+            <rect key="frame" x="0.0" y="0.0" width="414" height="100"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="zYh-Fw-ylx">
-                    <rect key="frame" x="16" y="36" width="382" height="94"/>
+                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="zYh-Fw-ylx">
+                    <rect key="frame" x="16" y="16" width="382" height="74"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Search Header Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wyw-uT-V9m">
-                            <rect key="frame" x="0.0" y="0.0" width="382" height="20.5"/>
+                            <rect key="frame" x="0.0" y="0.0" width="382" height="14"/>
                             <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                             <nil key="textColor"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <searchBar contentMode="redraw" searchBarStyle="minimal" placeholder="Search Here" translatesAutoresizingMaskIntoConstraints="NO" id="TrK-Vp-tmZ" customClass="CustomSearchBar" customModule="BottomSheet" customModuleProvider="target">
-                            <rect key="frame" x="0.0" y="37" width="382" height="57"/>
+                            <rect key="frame" x="0.0" y="24" width="382" height="50"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="50" id="O5R-zb-hI8"/>
+                            </constraints>
                             <textInputTraits key="textInputTraits"/>
                         </searchBar>
                     </subviews>
@@ -41,8 +44,8 @@
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="zYh-Fw-ylx" secondAttribute="trailing" constant="16" id="3u3-1L-jjZ"/>
                 <constraint firstItem="zYh-Fw-ylx" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="16" id="TuY-Fg-tTS"/>
-                <constraint firstItem="zYh-Fw-ylx" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="36" id="udb-9K-5lY"/>
-                <constraint firstAttribute="bottom" secondItem="zYh-Fw-ylx" secondAttribute="bottom" id="xRh-y7-O76"/>
+                <constraint firstItem="zYh-Fw-ylx" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="16" id="udb-9K-5lY"/>
+                <constraint firstAttribute="bottom" secondItem="zYh-Fw-ylx" secondAttribute="bottom" constant="10" id="xRh-y7-O76"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
         </view>

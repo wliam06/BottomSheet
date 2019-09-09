@@ -21,10 +21,20 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="48" translatesAutoresizingMaskIntoConstraints="NO" id="vWT-oF-34q">
-                    <rect key="frame" x="51.5" y="378" width="311" height="140"/>
+                    <rect key="frame" x="51.5" y="331" width="311" height="234"/>
                     <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YxN-ka-YTK">
+                            <rect key="frame" x="93.5" y="0.0" width="124" height="46"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="46" id="dK1-7o-GwE"/>
+                            </constraints>
+                            <state key="normal" title="Show me with Full"/>
+                            <connections>
+                                <action selector="forceClosed:" destination="-1" eventType="touchUpInside" id="W26-oA-B6y"/>
+                            </connections>
+                        </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ck6-Mm-s3q">
-                            <rect key="frame" x="19.5" y="0.0" width="272" height="46"/>
+                            <rect key="frame" x="19.5" y="94" width="272" height="46"/>
                             <fontDescription key="fontDescription" type="system" weight="medium" pointSize="28"/>
                             <state key="normal" title="Show Me with Header"/>
                             <connections>
@@ -32,7 +42,7 @@
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wit-0m-rBF">
-                            <rect key="frame" x="0.0" y="94" width="311" height="46"/>
+                            <rect key="frame" x="0.0" y="188" width="311" height="46"/>
                             <fontDescription key="fontDescription" type="system" weight="medium" pointSize="28"/>
                             <state key="normal" title="Show Me Only TableView"/>
                             <connections>

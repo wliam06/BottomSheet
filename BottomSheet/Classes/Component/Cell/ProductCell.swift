@@ -9,7 +9,8 @@
 import UIKit
 
 class ProductCell: UITableViewCell {
-  
+  @IBOutlet weak var nameLabel: UILabel!
+
   static func reuseIdentifier() -> String {
     return String(describing: ProductCell.self)
   }

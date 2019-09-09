@@ -29,7 +29,14 @@ class FirstPageViewController: UIViewController {
 
   @IBAction func showMeTableDidTapped(_ sender: Any) {
     let customTableView = CustomTableViewController(isShowHeader: false)
-    let bottomSheet = BottomSheetViewController(withController: customTableView, sizes: .semiFullScreen)
+    let bottomSheet = BottomSheetViewController(withController: customTableView, sizes: .lowScreen)
+    self.navigationController?.present(bottomSheet, animated: true, completion: nil)
+  }
+  
+  @IBAction func forceClosed(_ sender: Any) {
+    let customTableView = CustomTableViewController(isShowHeader: true)
+    let bottomSheet = BottomSheetViewController(withController: customTableView, sizes: .fullScreen)
+    bottomSheet.forceClosed = true
     self.navigationController?.present(bottomSheet, animated: true, completion: nil)
   }
 }

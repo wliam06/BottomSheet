@@ -8,7 +8,7 @@
 
 import UIKit
 
-class CustomTableViewController: UIViewController {
+class CustomTableViewController: UIViewController, BottomSheetProtocol {
   @IBOutlet weak var handlerView: UIView!
   @IBOutlet weak var vStackView: UIStackView!
   @IBOutlet weak var headerContainerView: CustomHeaderView!
@@ -26,8 +26,9 @@ class CustomTableViewController: UIViewController {
   }
 
   convenience init(isShowHeader: Bool) {
-    self.init()
+    self.init(nibName: String(describing: CustomTableViewController.self), bundle: nil)
     self.isShowHeader = isShowHeader
+
     loadViewIfNeeded()
   }
 
@@ -42,12 +43,18 @@ class CustomTableViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
 
+    // Top Rounded
+    self.view.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMinXMinYCorner]
+    self.view.layer.cornerRadius = 16
+
     tableView.register(UINib(nibName: ProductCell.reuseIdentifier(), bundle: nil),
                        forCellReuseIdentifier: ProductCell.reuseIdentifier())
   }
 
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
+
+    self.bottomSheetVC?.handleScrollView(self.tableView)
   }
 }
 
@@ -58,10 +65,12 @@ extension CustomTableViewController: UITableViewDelegate, UITableViewDataSource 
   
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let cell = tableView.dequeueReusableCell(withIdentifier: ProductCell.reuseIdentifier(),
-                                             for: indexPath)
-
-    cell.textLabel?.text = "Item \(indexPath.row)"
-    return cell
+                                             for: indexPath) as? ProductCell
+    cell?.nameLabel.text = "Row \(indexPath.row + 1)"
+    return cell!
   }
 
+  func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    return 101.5
+  }
 }
