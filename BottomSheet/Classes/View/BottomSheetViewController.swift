@@ -11,7 +11,7 @@ import UIKit
 enum SheetSize {
   case fixed(CGFloat)
   case fullScreen
-  case semiFullScreen
+  case halfScreen
   case lowScreen
 }
 
@@ -53,8 +53,9 @@ class BottomSheetViewController: UIViewController {
     return insets
   }
 
-  private(set) var sheetSize: SheetSize = .semiFullScreen
+  private(set) var containerSize: SheetSize = .fixed(0)
   private(set) var actualContainerSize: SheetSize = .fixed(0)
+  private(set) var orderedSheetSizes: [SheetSize] = [.fixed(0), .fullScreen]
 
   var forceClosed = false
 
@@ -64,11 +65,13 @@ class BottomSheetViewController: UIViewController {
   }
 
   convenience init(withController viewController: UIViewController,
-                   sizes: SheetSize) {
+                   sizes: [SheetSize] = []) {
     self.init(nibName: nil, bundle: nil)
-
     self.childViewController = viewController
-    self.sheetSize = sizes
+
+    if sizes.count > 0 {
+      self.setSizes(sizes)
+    }
 
     self.modalPresentationStyle = .overFullScreen
   }
@@ -80,6 +83,8 @@ class BottomSheetViewController: UIViewController {
   // MARK: - Lifecycle
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
+
+    self.view.backgroundColor = .clear
 
     UIView.animate(withDuration: 0.3, delay: 0,
                    options: .curveEaseOut,
@@ -94,7 +99,6 @@ class BottomSheetViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    self.view.backgroundColor = .clear
     configureContainerView()
 
     configureChildViewController()
@@ -108,14 +112,39 @@ class BottomSheetViewController: UIViewController {
     self.view.addGestureRecognizer(panGesture)
   }
 
+  // MARK: - Handle pan gesture when scroll
   public func handleScrollView(_ scrollView: UIScrollView) {
     scrollView.panGestureRecognizer.require(toFail: panGesture)
     self.childScrollView = scrollView
   }
 
+  // MARK: - Set sizes
+  private func setSizes(_ sizes: [SheetSize]) {
+    guard sizes.count > 0 else { return }
+
+    self.orderedSheetSizes = sizes.sorted(by: {self.viewHeight(forSize: $0) < self.viewHeight(forSize: $1) })
+    self.resize(toSize: sizes[0], animated: false)
+  }
+
+  // MARK: - Resize
+  private func resize(toSize size: SheetSize, animated: Bool = true) {
+    if animated {
+      UIView.animate(withDuration: 0.1, delay: 0, options: .curveEaseOut, animations: { [weak self] in
+        guard let self = self, let constraint = self.containerHeightConstraint else { return }
+        constraint.constant = self.viewHeight(forSize: size)
+        self.view.layoutIfNeeded()
+      }, completion: nil)
+    } else {
+      self.containerHeightConstraint?.constant = viewHeight(forSize: size)
+    }
+
+    self.containerSize = size
+    self.actualContainerSize = size
+  }
+
   private func configureContainerView() {
     self.view.addSubview(self.containerView)
-    self.containerHeightConstraint.constant = viewHeight(forSize: self.sheetSize)
+    self.containerHeightConstraint.constant = viewHeight(forSize: self.containerSize)
 
     self.containerView.layer.masksToBounds = true
     self.containerView.backgroundColor = .clear
@@ -143,7 +172,7 @@ class BottomSheetViewController: UIViewController {
     case .fullScreen:
       let insets = self.safeAreaInsets
       return UIScreen.main.bounds.height - insets.top
-    case .semiFullScreen:
+    case .halfScreen:
       let insets = self.safeAreaInsets
       return UIScreen.main.bounds.height - insets.top - 120
     case .lowScreen:
@@ -160,20 +189,32 @@ class BottomSheetViewController: UIViewController {
     dismissAreaView.addGestureRecognizer(tapGesture)
   }
 
+  @objc private func dismissViewTapped(completion: (() -> Void)? = nil) {
+    guard dismissOnBackgroundTap else { return }
+
+    // Close bottom sheet
+    UIView.animate(withDuration: 0.3, delay: 0, options: [.curveEaseIn], animations: { [weak self] in
+      self?.containerView.transform = CGAffineTransform(translationX: 0, y: self?.containerView.frame.height ?? 0)
+      self?.view.backgroundColor = .clear
+      }, completion: { [weak self] complete in
+        self?.dismiss(animated: true, completion: nil)
+    })
+  }
+
   @objc private func panned(_ gesture: UIPanGestureRecognizer) {
     let translation = gesture.translation(in: gesture.view?.superview)
     let velocity = (0.2 * gesture.velocity(in: self.view).y)
-//    let y = gesture.view?.superview?.frame.minY ?? 0
 
     let size = viewHeight(forSize: self.actualContainerSize)
 
+    // First gesture track
     if gesture.state == .began {
       self.firstPanPoint = translation
       self.actualContainerSize = .fixed(self.containerView.frame.height)
     }
 
-    let minHeight = min(size, viewHeight(forSize: .lowScreen))
-    let maxHeight = max(size, viewHeight(forSize: .fullScreen))
+    let minHeight = min(size, viewHeight(forSize: self.orderedSheetSizes.first))
+    let maxHeight = max(size, viewHeight(forSize: self.orderedSheetSizes.last))
 
     var newHeight = max(0, viewHeight(forSize: self.actualContainerSize) +
       (self.firstPanPoint.y - translation.y))
@@ -182,7 +223,6 @@ class BottomSheetViewController: UIViewController {
 
     if newHeight < minHeight {
       offset = minHeight - newHeight
-      debugPrint("offset", offset)
       newHeight = minHeight
     }
 
@@ -190,40 +230,15 @@ class BottomSheetViewController: UIViewController {
       newHeight = maxHeight
     }
 
-//    // Check gesture Y position
-//    if translation.y >= 0 {
-//      // Scroll Down
-//
-//      // Check if sheet size is Low screen type
-//      UIView.animate(withDuration: 0.4, delay: 0, options: .curveEaseOut, animations: { [weak self] in
-//        guard let self = self else { return }
-//        self.containerView.transform = CGAffineTransform.identity
-//        self.containerHeightConstraint.constant = newHeight
-//        }, completion: nil)
-//    } else {
-//      // Scroll Top
-//
-//      // Check sheet size
-//      if size == viewHeight(forSize: .lowScreen) {
-//        debugPrint("Low screen", (y + translation.y))
-//        UIView.animate(withDuration: 0.4, delay: 0, options: .curveEaseOut, animations: { [weak self] in
-//          guard let self = self else { return }
-//          self.containerView.transform = CGAffineTransform.identity
-//          self.containerHeightConstraint.constant = newHeight
-//        }, completion: nil)
-//      } else {
-//        debugPrint("Bigger screen")
-//      }
-//    }
-
     // Start tracking
     if gesture.state == .cancelled || gesture.state == .failed {
       UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseOut, animations: {
         self.containerView.transform = CGAffineTransform.identity
-        self.containerHeightConstraint.constant = self.viewHeight(forSize: self.sheetSize)
+        self.containerHeightConstraint.constant = self.viewHeight(forSize: self.containerSize)
       }, completion: nil)
     } else if gesture.state == .ended {
       var finalHeight = newHeight - offset - velocity
+
       if velocity > 500 {
         finalHeight = -1
       }
@@ -250,34 +265,28 @@ class BottomSheetViewController: UIViewController {
 
       if translation.y < 0 {
         // new size
-        if finalHeight < viewHeight(forSize: .semiFullScreen) {
-          debugPrint("BIGGER")
-//          newSize = viewHeight(forSize: .semiFullScreen)
-          newSize = .semiFullScreen
-        } else {
-          return
+        newSize = self.orderedSheetSizes.last ?? self.containerSize
+
+        for size in self.orderedSheetSizes.reversed() {
+          if finalHeight < self.viewHeight(forSize: size) {
+            newSize = size
+          } else {
+            break
+          }
         }
       } else {
-        // small size or dismiss
-        if finalHeight > viewHeight(forSize: .lowScreen) {
-          // Resize into smaller
-          debugPrint("SMALLER")
-//          newSize = viewHeight(forSize: .lowScreen)
-          newSize = .lowScreen
-        }
+        newSize = self.orderedSheetSizes.first ?? self.containerSize
 
-        // force to close
-        if forceClosed && finalHeight < viewHeight(forSize: .semiFullScreen) {
-          // force to dismiss not into smaller size
-          debugPrint("ALREADY CLOSED")
-        }
-
-        else {
-          return
+        for size in self.orderedSheetSizes {
+          if finalHeight > self.viewHeight(forSize: size) {
+            newSize = size
+          } else {
+            break
+          }
         }
       }
 
-      self.sheetSize = newSize
+      self.containerSize = newSize
 
       UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseOut, animations: {
         self.containerView.transform = CGAffineTransform.identity
@@ -287,125 +296,17 @@ class BottomSheetViewController: UIViewController {
         guard let self = self else { return }
         self.actualContainerSize = .fixed(self.containerView.frame.height)
       })
-
     } else {
+      containerHeightConstraint.constant = newHeight
+
       if offset > 0 && dismissOnPan {
         self.containerView.transform = CGAffineTransform(translationX: 0, y: offset)
       } else {
         self.containerView.transform = CGAffineTransform.identity
       }
     }
-
-    // 1
-//    if gesture.state == .began {
-//      self.firstPanPoint = translation
-//      self.actualContainerSize = .fixed(self.containerView.frame.height)
-//    }
-//
-//    let minHeight = min(size, viewHeight(forSize: .lowScreen))
-//    let maxHeight = max(size, viewHeight(forSize: .semiFullScreen))
-//
-//    var newHeight = max(0, viewHeight(forSize: self.actualContainerSize) + (self.firstPanPoint.y - translation.y))
-//    var offset: CGFloat = 0
-//
-//    if newHeight < minHeight {
-//      offset = minHeight - newHeight
-//      newHeight = minHeight
-//    }
-//
-//    if newHeight > maxHeight {
-//      newHeight = maxHeight
-//    }
-//
-//    if gesture.state == .cancelled || gesture.state == .failed {
-//      UIView.animate(withDuration: 0.4, delay: 0, options: .curveEaseOut, animations: {
-//        self.containerView.transform = CGAffineTransform.identity
-//        self.containerHeightConstraint.constant = self.viewHeight(forSize: self.sheetSize)
-//      }, completion: nil)
-//    } else if gesture.state == .ended {
-//      var finalHeight = newHeight - offset - velocity
-//      if velocity > 500 {
-//        finalHeight = -1
-//      }
-//
-//      let animationDuration = TimeInterval(abs(velocity*0.0002) + 0.2)
-//
-//      guard finalHeight >= (minHeight / 2) || !dismissOnPan else {
-//        // Dismiss
-//        UIView.animate(withDuration: animationDuration,
-//                       delay: 0,
-//                       options: .curveEaseOut,
-//                       animations: { [weak self] in
-//          self?.containerView.transform = CGAffineTransform(translationX: 0,
-//                                                            y: self?.containerView.frame.height ?? 0)
-//          self?.view.backgroundColor = .clear
-//        }, completion: { [weak self] complete in
-//          self?.dismiss(animated: false, completion: nil)
-//        })
-//
-//        return
-//      }
-//
-//      var newSize: CGFloat = 0
-//
-//      if translation.y < 0 {
-//        // new size
-//        if finalHeight < viewHeight(forSize: .semiFullScreen) {
-//          debugPrint("BIGGER")
-//          newSize = viewHeight(forSize: .semiFullScreen)
-//        } else {
-//          return
-//        }
-//      } else {
-//        // small size or dismiss
-//        if finalHeight > viewHeight(forSize: .lowScreen) {
-//          // Resize into smaller
-//          debugPrint("SMALLER")
-//          newSize = viewHeight(forSize: .lowScreen)
-//        }
-//
-//        // force to close
-//        if forceClosed && finalHeight < viewHeight(forSize: .semiFullScreen) {
-//          // force to dismiss not into smaller size
-//          debugPrint("ALREADY CLOSED")
-//        }
-//
-//        return
-//      }
-//
-//      self.containerView.frame.size.height = newSize
-//
-//      UIView.animate(withDuration: animationDuration, delay: 0, options: .curveEaseOut, animations: {
-//        self.containerView.transform = CGAffineTransform.identity
-//        self.containerHeightConstraint.constant = newSize
-//        self.view.layoutIfNeeded()
-//      }, completion: { [weak self] complete in
-//        guard let self = self else { return }
-//        self.actualContainerSize = .fixed(self.containerView.frame.height)
-//      })
-//    } else {
-//      if offset > 0 && dismissOnPan {
-//        self.containerView.transform = CGAffineTransform(translationX: 0, y: offset)
-//      } else {
-//        self.containerView.transform = CGAffineTransform.identity
-//      }
-//    }
-    
-  }
-
-  @objc private func dismissViewTapped(completion: (() -> Void)? = nil) {
-    guard dismissOnBackgroundTap else { return }
-
-    // Close bottom sheet
-    UIView.animate(withDuration: 0.3, delay: 0, options: [.curveEaseIn], animations: { [weak self] in
-      self?.containerView.transform = CGAffineTransform(translationX: 0, y: self?.containerView.frame.height ?? 0)
-      self?.view.backgroundColor = .clear
-      }, completion: { [weak self] complete in
-        self?.dismiss(animated: true, completion: nil)
-    })
   }
 }
-
 
 extension BottomSheetViewController: UIGestureRecognizerDelegate {
   func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
@@ -438,10 +339,9 @@ extension BottomSheetViewController: UIGestureRecognizerDelegate {
         return false }
 
     if velocity.y < 0 {
-      let containerHeight = viewHeight(forSize: .fullScreen)
-      debugPrint("sheet sizes", viewHeight(forSize: self.sheetSize))
-      return viewHeight(forSize: .fullScreen) > viewHeight(forSize: self.sheetSize) &&
-        viewHeight(forSize: self.sheetSize) < viewHeight(forSize: .fullScreen)
+      let containerHeight = viewHeight(forSize: self.containerSize)
+      return viewHeight(forSize: self.orderedSheetSizes.last) > containerHeight &&
+        containerHeight < viewHeight(forSize: .fullScreen)
     } else {
       return true
     }

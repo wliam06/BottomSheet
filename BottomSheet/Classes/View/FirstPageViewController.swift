@@ -23,19 +23,19 @@ class FirstPageViewController: UIViewController {
   // MARK: - Action
   @IBAction func showMeHeaderDidTapped(_ sender: Any) {
     let customTableView = CustomTableViewController(isShowHeader: true)
-    let bottomSheet = BottomSheetViewController(withController: customTableView, sizes: .semiFullScreen)
+    let bottomSheet = BottomSheetViewController(withController: customTableView, sizes: [.fullScreen, .lowScreen])
     self.navigationController?.present(bottomSheet, animated: true, completion: nil)
   }
 
   @IBAction func showMeTableDidTapped(_ sender: Any) {
     let customTableView = CustomTableViewController(isShowHeader: false)
-    let bottomSheet = BottomSheetViewController(withController: customTableView, sizes: .lowScreen)
+    let bottomSheet = BottomSheetViewController(withController: customTableView, sizes: [.lowScreen, .halfScreen])
     self.navigationController?.present(bottomSheet, animated: true, completion: nil)
   }
   
   @IBAction func forceClosed(_ sender: Any) {
     let customTableView = CustomTableViewController(isShowHeader: true)
-    let bottomSheet = BottomSheetViewController(withController: customTableView, sizes: .fullScreen)
+    let bottomSheet = BottomSheetViewController(withController: customTableView, sizes: [.halfScreen, .lowScreen])
     bottomSheet.forceClosed = true
     self.navigationController?.present(bottomSheet, animated: true, completion: nil)
   }
