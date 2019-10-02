@@ -148,7 +148,7 @@ class BottomSheetViewController: UIViewController {
 
     self.containerView.layer.masksToBounds = true
     self.containerView.backgroundColor = .clear
-    self.containerView.transform = CGAffineTransform(translationX: 0, y: UIScreen.main.bounds.height)
+    self.containerView.transform = CGAffineTransform(translationX: 0, y: 100)
 
     self.view.addSubview(UIView(frame: .zero))
   }

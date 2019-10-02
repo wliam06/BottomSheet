@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina6_1" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14868" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14824"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -21,30 +19,20 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="48" translatesAutoresizingMaskIntoConstraints="NO" id="vWT-oF-34q">
-                    <rect key="frame" x="51.5" y="331" width="311" height="234"/>
+                    <rect key="frame" x="20" y="379.5" width="374" height="137"/>
                     <subviews>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YxN-ka-YTK">
-                            <rect key="frame" x="93.5" y="0.0" width="124" height="46"/>
-                            <constraints>
-                                <constraint firstAttribute="height" constant="46" id="dK1-7o-GwE"/>
-                            </constraints>
-                            <state key="normal" title="Show me with Full"/>
-                            <connections>
-                                <action selector="forceClosed:" destination="-1" eventType="touchUpInside" id="W26-oA-B6y"/>
-                            </connections>
-                        </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ck6-Mm-s3q">
-                            <rect key="frame" x="19.5" y="94" width="272" height="46"/>
-                            <fontDescription key="fontDescription" type="system" weight="medium" pointSize="28"/>
-                            <state key="normal" title="Show Me with Header"/>
+                            <rect key="frame" x="22.5" y="0.0" width="329" height="41"/>
+                            <fontDescription key="fontDescription" type="boldSystem" pointSize="24"/>
+                            <state key="normal" title="Show Me with Search Header"/>
                             <connections>
                                 <action selector="showMeHeaderDidTapped:" destination="-1" eventType="touchUpInside" id="Kar-pB-gbr"/>
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wit-0m-rBF">
-                            <rect key="frame" x="0.0" y="188" width="311" height="46"/>
-                            <fontDescription key="fontDescription" type="system" weight="medium" pointSize="28"/>
-                            <state key="normal" title="Show Me Only TableView"/>
+                            <rect key="frame" x="70" y="89" width="234" height="48"/>
+                            <fontDescription key="fontDescription" style="UICTFontTextStyleTitle0"/>
+                            <state key="normal" title="Show Me with List"/>
                             <connections>
                                 <action selector="showMeTableDidTapped:" destination="-1" eventType="touchUpInside" id="cFY-Kl-QJR"/>
                             </connections>
@@ -54,10 +42,13 @@
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="vWT-oF-34q" secondAttribute="trailing" constant="20" id="7pb-zJ-IMV"/>
                 <constraint firstItem="vWT-oF-34q" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" id="DDw-Uk-Bfb"/>
+                <constraint firstItem="vWT-oF-34q" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="20" id="Pej-CW-tOu"/>
                 <constraint firstItem="vWT-oF-34q" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="WRl-w8-PME"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
+            <point key="canvasLocation" x="139" y="128"/>
         </view>
     </objects>
 </document>

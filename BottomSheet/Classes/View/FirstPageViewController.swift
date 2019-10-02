@@ -32,11 +32,4 @@ class FirstPageViewController: UIViewController {
     let bottomSheet = BottomSheetViewController(withController: customTableView, sizes: [.lowScreen, .halfScreen])
     self.navigationController?.present(bottomSheet, animated: true, completion: nil)
   }
-  
-  @IBAction func forceClosed(_ sender: Any) {
-    let customTableView = CustomTableViewController(isShowHeader: true)
-    let bottomSheet = BottomSheetViewController(withController: customTableView, sizes: [.halfScreen, .lowScreen])
-    bottomSheet.forceClosed = true
-    self.navigationController?.present(bottomSheet, animated: true, completion: nil)
-  }
 }
